@@ -1,10 +1,13 @@
+from absl import app
 from string import ascii_lowercase
 from Words import *
+
 
 minWordLen = 3
 maxWordLen = 5
 
-    # setting number of attempts until loss
+
+# setting number of attempts until loss
 def getNumAttempts(wordLen):
     x = -1
     while True:
@@ -41,7 +44,6 @@ def getMinWordLen():
     return x
     
 
-
 def printGameState(attemptsLeft, wordArr):
     
     output = "\nWord: "
@@ -65,7 +67,7 @@ def isGameOver():
     exitPrompt = ""
 
     while isValidInput == False:
-        exitPrompt = input('Would you like to play again? (y/n)')
+        exitPrompt = input('Would you like to play again? (y/n): ')
         exitPrompt = exitPrompt.lower()
         exitPrompt = exitPrompt.strip()
 
@@ -83,7 +85,7 @@ def isGameOver():
             return True
 
 
-def play():
+def main(argv):
     # get word
     gameOver = False
     
@@ -100,46 +102,67 @@ def play():
         gameOver = isGameOver()
 
 
+def requestGuess():
+    validInput = False
+    guess = ""
+    while True:
+        guess = input("Guess a letter: -> ")
+        guess = guess.strip()
+        
+        if len(guess) == 1:
+            validInput = True
+        elif len(guess) == len(word):
+            validInput = True
+        
+        if validInput == True:
+            break
+    return guess
+
+
+def checkGuess(word, guessStr, lettersCorrect, answer):
+    correct = False
+    for i in range(0, len(word)):
+        letter = answer[i]
+        
+        if letter == '*':
+            if word[i] == guessStr:
+                correct = True
+                lettersCorrect += 1
+                answer[i] = guessStr
+    return correct, lettersCorrect, answer
+
+
 def playHangman(word, turns):
     # setup answer string and printable answer state
     answer = ['*'] * len(word)
     lettersCorrect = 0
     for i in range(0, turns):
-        printGameState(turns - i, answer)
         
-        validInput = False
-        guess = ""
+        #loop to not count correct answers
         while True:
-            guess = input("Guess a letter: -> ")
-            guess = guess.strip()
+            printGameState(turns - i, answer)
             
-            if len(guess) == 1:
-                validInput = True
-            elif len(guess) == len(word):
-                validInput = True
-            
-            if validInput == True:
-                break
+            guess = requestGuess()
 
-        correct = False
-        for i in range(0, len(word)):
-            letter = answer[i]
-            if letter == '*':
-                if word[i] == guess:
-                    correct = True
-                    lettersCorrect += 1
-                    answer[i] = guess
-                
+            # check each location in answer string and relect correct letters
+            correct, lettersCorrect, answer = checkGuess(word, guess, lettersCorrect, answer)
+            
+            # if correct add extra turn
+            if correct == True:
+                pass
+            else:
+                break
         
         if lettersCorrect >= len(word):
             winMessage(turns, answer)
             return
-    outcome = "You Lose! The word was " + word + "!\n"
+
+    outcome = "You Lose! The word was -> " + word + "\n"
     print(outcome)
     return
 
 
 if __name__ == '__main__':
-    play()
+    app.run(main)
     print("Thank you for playing!")
 
