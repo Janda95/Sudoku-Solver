@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 from absl import app
 from string import ascii_lowercase
-from Words import *
+from words import *
 
 
 minWordLen = 3
@@ -85,23 +86,6 @@ def isGameOver():
             return True
 
 
-def main(argv):
-    # get word
-    gameOver = False
-    
-    while gameOver == False:
-        # setup
-        wordLen = getMinWordLen()
-        #word = words.getRandomWord()
-        word = "example"
-        turns = getNumAttempts(len(word))
-        
-        # main game loop
-        playHangman(word, turns)
-    
-        gameOver = isGameOver()
-
-
 def requestGuess():
     validInput = False
     guess = ""
@@ -160,6 +144,23 @@ def playHangman(word, turns):
     outcome = "You Lose! The word was -> " + word + "\n"
     print(outcome)
     return
+
+
+def main(argv):
+    # get word
+    gameOver = False
+    
+    while gameOver == False:
+        # setup
+        # wordLen = getMinWordLen()
+        word = words.getRandomWord()
+        # word = "example"
+        turns = getNumAttempts(len(word))
+        
+        # main game loop
+        playHangman(word, turns)
+    
+        gameOver = isGameOver()
 
 
 if __name__ == '__main__':
