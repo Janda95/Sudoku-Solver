@@ -8,20 +8,22 @@ Install instructions:
 """
 
 import tkinter as tk
-submit
-entry
+submit = None
+entry = None
 
 
 def submit_str():
-
+    pass
 
 
 if __name__ == "__main__":
     top = tk.Tk()
     
-    submit = tk.Button(top, text="Hello", command = submitStr)
-    entry = tk.Entry(top, )
+    label = tk.Text(top, text="Hello").grid(0, 0)
+    submit = tk.Button(top, text="World", command = submit_str).grid(1, 1)
+    entry = tk.Entry(top).grid(1, 0)
     
     # add widgets
+    
     
     top.mainloop()
