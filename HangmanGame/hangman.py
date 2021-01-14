@@ -22,8 +22,8 @@ def getNumAttempts(wordLen):
     
     if x > 20:
         x = 20
-    elif x < wordLen:
-        x = wordLen
+    elif x < 1:
+        x = 1
     
     return x
     
@@ -134,9 +134,13 @@ def playHangman(word, turns):
             if len(guess) == len(word):
                 if guess == word:
                     lettersCorrect = len(word)
-                    break
             else:
                 correctAns, lettersCorrect, answer = checkLetterGuess(word, guess, lettersCorrect, answer)
+            
+            # check win condition
+            if lettersCorrect >= len(word):
+                winMessage(turns, answer)
+                return
             
             # if correct add extra turn
             if correctAns == True:
@@ -144,9 +148,6 @@ def playHangman(word, turns):
             else:
                 break
         
-        if lettersCorrect >= len(word):
-            winMessage(turns, answer)
-            return
 
     outcome = "You Lose! The word was -> " + word + "\n"
     print(outcome)
