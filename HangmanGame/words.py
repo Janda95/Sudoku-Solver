@@ -2,9 +2,9 @@ import random
 
 WORDLIST = 'wordlist.txt'
 
-
 # get random word with normal lowercase letters from txt file
 def get_random_word(min_word_length):
+    
     num_words_processed = 0
     curr_word = None
     with open(WORDLIST, 'r') as f:

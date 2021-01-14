@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import sys, os
+
 from absl import app
 from string import ascii_lowercase
-from words import *
+from words import get_random_word
 
 
 minWordLen = 3
@@ -86,7 +88,7 @@ def isGameOver():
             return True
 
 
-def requestGuess():
+def requestGuess(word):
     validInput = False
     guess = ""
     while True:
@@ -103,7 +105,7 @@ def requestGuess():
     return guess
 
 
-def checkGuess(word, guessStr, lettersCorrect, answer):
+def checkLetterGuess(word, guessStr, lettersCorrect, answer):
     correct = False
     for i in range(0, len(word)):
         letter = answer[i]
@@ -121,18 +123,23 @@ def playHangman(word, turns):
     answer = ['*'] * len(word)
     lettersCorrect = 0
     for i in range(0, turns):
-        
+        correctAns = False
         #loop to not count correct answers
         while True:
             printGameState(turns - i, answer)
             
-            guess = requestGuess()
+            guess = requestGuess(word)
 
-            # check each location in answer string and relect correct letters
-            correct, lettersCorrect, answer = checkGuess(word, guess, lettersCorrect, answer)
+            # check each location in answer string and reflect correct letters
+            if len(guess) == len(word):
+                if guess == word:
+                    lettersCorrect = len(word)
+                    break
+            else:
+                correctAns, lettersCorrect, answer = checkLetterGuess(word, guess, lettersCorrect, answer)
             
             # if correct add extra turn
-            if correct == True:
+            if correctAns == True:
                 pass
             else:
                 break
@@ -153,7 +160,7 @@ def main(argv):
     while gameOver == False:
         # setup
         # wordLen = getMinWordLen()
-        word = words.getRandomWord()
+        word = get_random_word(-1)
         # word = "example"
         turns = getNumAttempts(len(word))
         
@@ -164,6 +171,7 @@ def main(argv):
 
 
 if __name__ == '__main__':
+    # print(sys.path)
     app.run(main)
     print("Thank you for playing!")
 
