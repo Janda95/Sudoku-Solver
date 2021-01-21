@@ -19,6 +19,7 @@ class Application(tk.Frame):
         self.hangman = hangman
         self.pack()
         self.create_widgets()
+        print(hangman)
         
         
     def create_widgets(self):
@@ -59,7 +60,6 @@ if __name__ == "__main__":
     '''
     
     root = tk.Tk()
-    hangman = None
-    app = Application(root, hangman, root)
-    
+    hangman = "hangman goes here"
+    app = Application(hangman, root)
     app.mainloop()
