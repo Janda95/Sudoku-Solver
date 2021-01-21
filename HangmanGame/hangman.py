@@ -32,7 +32,8 @@ def getMinWordLen():
     x = -1
     while True:
         try:
-            msg = "What length of word would you like to attempt? ({}-{}): ".format(minWordLen, maxWordLen)
+            msg = "What length of word would you like to attempt? ({}-{}): "
+            msg.format(minWordLen, maxWordLen)
             inputStr = input(msg)
             x = int(inputStr)
             break
@@ -135,7 +136,12 @@ def playHangman(word, turns):
                 if guess == word:
                     lettersCorrect = len(word)
             else:
-                correctAns, lettersCorrect, answer = checkLetterGuess(word, guess, lettersCorrect, answer)
+                correctAns, lettersCorrect, answer = checkLetterGuess(
+                    word, 
+                    guess, 
+                    lettersCorrect, 
+                    answer
+                )
             
             # check win condition
             if lettersCorrect >= len(word):
@@ -175,4 +181,3 @@ if __name__ == '__main__':
     # print(sys.path)
     app.run(main)
     print("Thank you for playing!")
-
