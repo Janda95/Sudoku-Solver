@@ -14,6 +14,19 @@ def how_many_unique_tokens(numOfChars, maxLen):
         print(count)
     return count
 
+# generate token based on count and unique characters
+def generate_token(count, lang):
+    
+    token = "atokenisgenerated"
+
+    return token
+
+
+# function to add to json
+def write_json(data, filename='test.json'):
+    with open(filename, 'w') as file:
+        json.dump(data, file, indent=4)
+
 
 # create dictionary and populate, get token for link else create link
 # def main(argv):
@@ -21,23 +34,42 @@ def main():
     # using file as a dummy db: 1st line how many entries, pairs
     file = None
     if not os.path.exists('test.json'):
-        file = os.open('test.json', 'rwx')
+        file = open('test.json', 'x')
+        file.close()
+
+    file = open('test.json', 'r')
+    json_data = json.load(file)
+    dataStr = json.dumps(json_data, indent=4)
+    print(dataStr)
 
     lang = list()
     for letter in characters:
         lang.append(letter)
 
-    #json_data = json.load(file)
-    # dataStr = json.dumps(json_data)
-    
-    data = {'people': [{'name': 'Scott', 'website': 'stackabuse.com', 'from': 'Nebraska'}]}
-    dataStr = json.dumps(data)
-    print(dataStr)
-    # for item in json_data:
-    #     print("")
+    count = json_data["count"]
+    pairs = json_data["urls"]
 
-    # decision: import and write to file? (json?) XOR use python db extention?
-    pass
+    urlDict = {}
+    for pair in pairs:
+        urlDict[pair["website"]] = pair["miniurl"]
+    
+    myInput = "website.com"
+    myUrl = urlDict.get(myInput, None)
+    newJsonItem = None
+
+    # create token if dict comes back empty
+    if myUrl == None:
+        myUrl = generate_token(count, lang)
+        urlDict[myInput] = myUrl
+        count += 1
+        json_data["count"] = count
+        newJsonItem = {"website": myInput, "miniurl": myUrl}
+        pairs.append(newJsonItem)
+
+    if newJsonItem != None:
+        write_json(json_data)
+
+    print(myUrl)
 
 
 if __name__ == "__main__":
