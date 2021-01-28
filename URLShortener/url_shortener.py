@@ -59,7 +59,11 @@ def main():
 
     # create token if dict comes back empty
     if myUrl == None:
-        myUrl = generate_token(count, lang)
+        # check for hash collision before saving new url pair
+        while True:
+            myUrl = generate_token(count, lang)
+            if urlDict.get() != None:
+                
         urlDict[myInput] = myUrl
         count += 1
         json_data["count"] = count
