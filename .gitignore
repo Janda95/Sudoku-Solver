@@ -138,6 +138,7 @@ dmypy.json
 cython_debug/
 
 # vscode ignore
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -170,3 +171,5 @@ target/
 *-solved.ipynb
 
 .idea/
+
+~venv*
