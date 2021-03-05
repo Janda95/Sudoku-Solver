@@ -1,4 +1,6 @@
 '''
+Created by: Jarek Rettinghouse
+
 Goal:
 
 Assist in Randomizing Scene for Teleop Data Collection
@@ -56,7 +58,7 @@ def is_valid_number(num_string):
 
     if num < 1:
         msg = "Error: " + num_string + " needs to be 1 or greater \n"
-        print()
+        print(msg)
         return -1
 
     return num
@@ -90,7 +92,7 @@ def main(argv):
         w = is_valid_number(val)
 
     while(n == None or n < 1):
-        val = input("Total objects > 1 ")
+        val = input("Total objects > 1: ")
         n = is_valid_number(val)
 
     for i in range(0, n):
