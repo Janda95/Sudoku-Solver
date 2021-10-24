@@ -2,9 +2,7 @@
 
 Given a sudoku board, solve for the missing numbers and print out a completed board
 
-If there is no solution then return empty
-
-
+If there is no solution then return None
 
 # solve sudoku using backtracking!
 # our puzzl is a list of lists, where each inner list is a row in our sudoku puzzle
@@ -13,16 +11,19 @@ If there is no solution then return empty
 
 # Step 1: choose somewhere on the puzzle to make a guess
 
-# Step 2: Make a guess, add it to the stack with location and guess
+# Step 2: Make a guess
 
 # Step 3: Check Vertical, horizontal, and local square if conflicting
 
 # Step 4: 
-    a. If conflicting, try the next number -> if number is 10 then pop from the stack and try next number, set current square to -1 -> Step 2
+    a. If conflicting, try the next number -> if number is 10, set location to -1, 
+    pop from the stack, set location and try next number from stack tuple
 
-    b. If successful add to the stack
+    b. If successful, add it to the stack with location and guess
 
-# Step 5 
+# Step 5:
+    a. If no more guesses then return the completed puzzle
+    b. If no available guesses at and empty stack, return None to represent 
 '''
 
 
@@ -45,8 +46,6 @@ If there is no solution then return empty
 '''
 
 
-
-
 def pretty_print_puzzle(puzzle):
     print('\nPuzzle:\n')
     for row in puzzle:
@@ -58,8 +57,8 @@ def find_next_empty(puzzle):
     # find next empty square
     # return row, col tuple or (None, None) if there is none
 
+    # Ideas for improvement
     # can use current row and col as a start to reduce checks?
-
     for i in range(len(puzzle[0])):
         for j in range(len(puzzle[0])):
             if puzzle[i][j] == -1:
@@ -86,7 +85,7 @@ def check_valid_number(x, y, puzzle):
             if puzzle[x][j] == number:
                 return False
 
-    # check box
+    # check box area ignoring location with current guess
     xi = (x // 3) * 3
     yi = (y // 3) * 3
 
@@ -100,8 +99,8 @@ def check_valid_number(x, y, puzzle):
 
 
 def solve_sudoku(puzzle):
-    guess_stack = list() # tuple (x 0-8, y 0-8, int 1-9)
-    # iteration = 0
+    guess_stack = list() # tuple ( (x:0-8, y: 0-8), int 1-9)
+
     still_searching = True
     while still_searching:
 
@@ -112,11 +111,11 @@ def solve_sudoku(puzzle):
             return puzzle
 
         # stack interactions - make guess, do a check, fail 1-8 -> +1 fail 9 -> look at stack
-        
-        # new number
+        # set location for x and y for new location
         x = coords[0]
         y = coords[1]
-        
+
+        # guess starts at zero to increment at start of loop
         guess = 0
         attempting_numbers = True
 
@@ -130,15 +129,20 @@ def solve_sudoku(puzzle):
                 attempting_numbers = False
                 curr_coords = (x, y)
                 guess_stack.append(((curr_coords, guess)))
+
             else:
                 # number is over 9 try next stack location
                 if guess > 9:
                     print("\n")
                     msg = "Over 9"
                     print(msg)
+
                     puzzle[x][y] = -1
+                    # if stack is empty then no solution
                     if len(guess_stack) <= 0:
                         return None
+
+                    # pop and set guess and location to iterate next loop
                     backtrack_guess = guess_stack.pop()
                     guess = backtrack_guess[1]
                     x = backtrack_guess[0][0]
